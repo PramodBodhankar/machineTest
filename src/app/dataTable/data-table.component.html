@@ -1,0 +1,134 @@
+<div class="align-items-center d-flex justify-content-center page-container">
+    <div class="data-table-container border rounded">
+        <div class="row m-0 h-100">
+            <div class="border-right col-md-3 h-100 p-0 tabs-container d-flex flex-column">
+                <div class="tabs-btns-wrapper d-flex border-bottom">
+                    <div *ngFor="let tab of tabsdata; let i=index"
+                        class="tab-btn col-md-4 p-3 d-flex justify-content-center cursor-pointer"
+                        [class.active-tab]=" i === activeTab" (click)="setActiveTab(i)">
+                        <span>{{tab.name}}</span>
+                    </div>
+                    <!-- <div class="col-md-4 p-3 d-flex justify-content-center cursor-pointer">
+                        <span>Tab 1</span>
+                    </div>
+                    <div class="col-md-4 p-3 d-flex justify-content-center cursor-pointer">
+                        <span>Tab 1</span>
+                    </div> -->
+                </div>
+                <div class="search-input-container align-items-center border-bottom d-flex py-2">
+                    <input type="text" name="search" [(ngModel)]="searchText" class="border-0">
+                    <span class="material-icons icon-image-preview cursor-pointer">search</span>
+                </div>
+                <div id="leftPane" class="tab-data-container px-1 py-1" [dragula]="dragId"
+                    [(dragulaModel)]="currentTabData">
+                    <ng-container *ngIf="currentTabData">
+                        <div *ngFor="let tabData of currentTabData; let j=index" class="tab-data-row p-3 mb-1 rounded"
+                            [class.drag-handle]="tabData.isChecked" [class.active-data]="tabData.isChecked">
+                            <div class="form-check form-check-inline" [class.drag-handle]="tabData.isChecked">
+                                <input class="form-check-input" type="checkbox" [id]="j"
+                                    [(ngModel)]="tabData.isChecked">
+                                <label class="form-check-label" [for]="j"
+                                    [class.drag-handle]="tabData.isChecked">{{tabData.name}}</label>
+                            </div>
+                        </div>
+                    </ng-container>
+                </div>
+            </div>
+            <div class="data-container col-md-9 p-0 d-flex flex-column">
+                <div class="data-table-header row m-0 py-3 border-bottom">
+                    <div class="col-md-10 dropdown-container d-flex justify-content-center">
+                        <div class="dropdown mr-2">
+                            <button class="btn border-bottom dropdown-toggle" type="button" id="dropdownMenuButton1"
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Dropdown 1
+                            </button>
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                <a class="dropdown-item" href="#">Action</a>
+                                <a class="dropdown-item" href="#">Another action</a>
+                                <a class="dropdown-item" href="#">Something else here</a>
+                            </div>
+                        </div>
+                        <div class="dropdown">
+                            <button class="btn border-bottom dropdown-toggle" type="button" id="dropdownMenuButton2"
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Dropdown 2
+                            </button>
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton2">
+                                <a class="dropdown-item" href="#">Action</a>
+                                <a class="dropdown-item" href="#">Another action</a>
+                                <a class="dropdown-item" href="#">Something else here</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-2 icons-container d-flex">
+                        <div
+                            class="filter-icon align-items-center d-flex filter-icon justify-content-center w-50 border-left">
+                            <span class="material-icons icon-image-preview cursor-pointer">filter_list</span>
+                        </div>
+                        <div
+                            class="delete-icon align-items-center d-flex filter-icon justify-content-center w-50 border-left">
+                            <span class="material-icons icon-image-preview cursor-pointer" (click)="removeSelectedrows()">delete</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="data-table-body flex-grow-1">
+                    <div class="table-data-header row m-0 py-3 bg-light border-bottom">
+                        <div class="col-md-4 column-1">
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input mr-4" type="checkbox" id="column-1"
+                                    [(ngModel)]="isAllSelected" (ngModelChange)="onSelectAll($event)">
+                                <label class="form-check-label column-labels" for="column-1">Column 1</label>
+                            </div>
+                        </div>
+                        <div class="col-md-4 column-1">
+                                <span class="column-labels">Column 2</span>
+                        </div>
+                        <div class="col-md-4 column-1">
+                                <span class="column-labels">Column 2</span>
+                        </div>
+                    </div>
+                    <div id="tableRows" class="data-table-body-container" [dragula]="dragId"
+                        [(dragulaModel)]="rowItems">
+                        <ng-container *ngIf="rowItems.length">
+                            <div *ngFor="let rowData of rowItems; let k=index"
+                                class="table-data-row row m-0 py-3 align-items-center border-bottom">
+                                <div class="col-md-4 column-1">
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input mr-4" type="checkbox" [id]="'row-'+k"
+                                            [(ngModel)]="rowData.isChecked">
+                                        <label class="form-check-label column-labels"
+                                            [for]="'row-'+k">{{rowData.name}}</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <button class="btn border-bottom dropdown-toggle" type="button"
+                                        [id]="'dropdownMenuButton1'+k" data-toggle="dropdown" aria-haspopup="true"
+                                        aria-expanded="false">
+                                        {{rowData.column2Options[0]}}
+                                    </button>
+                                    <div class="dropdown-menu">
+                                        <div *ngFor="let option of rowData.column2Options" class="dropdown-item">
+                                            {{option}}</div>
+                                        <!-- <a class="dropdown-item" href="#">Action</a> -->
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <button class="btn border-bottom dropdown-toggle" type="button"
+                                        [id]="'dropdownMenuButton2'+k" data-toggle="dropdown" aria-haspopup="true"
+                                        aria-expanded="false">
+                                        {{rowData.column2Options[0]}}
+                                    </button>
+                                    <div class="dropdown-menu">
+                                        <div *ngFor="let option of rowData.column2Options" class="dropdown-item">
+                                            {{option}}</div>
+                                        <!-- <a class="dropdown-item" href="#">Action</a> -->
+                                    </div>
+                                </div>
+                            </div>
+                        </ng-container>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
