@@ -1,0 +1,8 @@
+{
+    "/api/*": {
+        "target": "http://clothingecommerce.gearhostpreview.com/index.php",
+        "secure": false,
+        "logLevel": "debug",
+        "changeOrigin": true
+    }
+}
